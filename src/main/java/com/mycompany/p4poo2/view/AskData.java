@@ -2,6 +2,7 @@ package com.mycompany.p4poo2.view;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import com.mycompany.p4poo2.utils.Utils;
 
 
 
@@ -11,6 +12,7 @@ import java.util.Scanner;
  */
 public class AskData {
     private Scanner scanner;
+    private final int attemptsNif = 5;
     
     public AskData() {
         scanner = new Scanner(System.in);
@@ -21,7 +23,6 @@ public class AskData {
      *devuelve un Strig con la respuesta*/
 
     public String askString(String msg) {
-        scanner.nextLine();
         System.out.println(msg);
         String answer = "";
         answer = scanner.nextLine();
@@ -115,5 +116,30 @@ public class AskData {
         }
         return n;
     }
+    
+    public String askNif(String msg) {
+        String nif = "";
+        boolean validNif = false;
+        int count = 0;
+        do {
+            try {
+                if(count == attemptsNif) {
+                    return "-1";
+                }
+                System.out.println("Introdueix el NIF: ");
+                nif = scanner.nextLine();
+                validNif = Utils.nifIsValid(nif);
+                
+                if(!validNif) {
+                    System.out.println("NIF no valido, prueba otra vez");
+                }
+                count++;
+            } catch (InputMismatchException e) {
+                e.getMessage();
+            }
+        }while(!validNif);
+        return nif;
+    }
+    
     
 }
